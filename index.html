@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CUNYHousing — Find Affordable Housing in NYC</title>
+
+  <!-- Google Fonts: DM Sans for body text, DM Serif Display for headings -->
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
+
+  <!-- Our custom stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ============================================================
+     HEADER — Logo + Desktop Nav + Mobile Hamburger Menu
+     ============================================================ -->
+<header>
+  <div class="header-inner">
+
+    <!-- Logo — clicking it takes you back to the Home page -->
+    <div class="logo" onclick="showPage('home')">
+      <div class="logo-icon">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <path d="M9 2L2 7v9h5v-5h4v5h5V7L9 2z" fill="white"/>
+        </svg>
+      </div>
+      <span class="logo-text">CUNY<span>Housing</span></span>
+    </div>
+
+    <!-- Desktop navigation — hidden on mobile -->
+    <nav class="nav-desktop">
+      <a id="nav-home-d" class="active" onclick="showPage('home')">Home</a>
+      <a id="nav-resources-d" onclick="showPage('resources')">Resources</a>
+      <a id="nav-about-d" onclick="showPage('about')">About</a>
+    </nav>
+
+    <!-- Hamburger button — only visible on mobile -->
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <!-- Mobile dropdown nav -->
+  <nav class="nav-mobile" id="nav-mobile">
+    <a id="nav-home-m" class="active" onclick="showPage('home');toggleMenu()">Home</a>
+    <a id="nav-resources-m" onclick="showPage('resources');toggleMenu()">Resources</a>
+    <a id="nav-about-m" onclick="showPage('about');toggleMenu()">About</a>
+  </nav>
+</header>
+
+
+<!-- ============================================================
+     HOME PAGE
+     ============================================================ -->
+<div id="page-home" class="page active">
+
+  <section class="hero">
+    <h1>Find Affordable Housing<br>Near Your CUNY Campus</h1>
+    <p>Search NYCHA developments across all five boroughs — built for CUNY students.</p>
+
+    <!-- Filter card -->
+    <div class="filter-card">
+      <div class="filter-row">
+
+        <!-- Left column: Campus OR Borough with divider -->
+        <div class="filter-group">
+          <label>CUNY Campus</label>
+          <select id="campus-select" onchange="onCampusChange()">
+            <option value="">Select your campus</option>
+            <optgroup label="── Manhattan ──">
+              <option value="MANHATTAN">Baruch College</option>
+              <option value="MANHATTAN">BMCC (Borough of Manhattan Community College)</option>
+              <option value="MANHATTAN">City College of New York (CCNY)</option>
+              <option value="MANHATTAN">CUNY Graduate Center</option>
+              <option value="MANHATTAN">CUNY School of Law</option>
+              <option value="MANHATTAN">Guttman Community College</option>
+              <option value="MANHATTAN">Hunter College</option>
+              <option value="MANHATTAN">John Jay College</option>
+            </optgroup>
+            <optgroup label="── Brooklyn ──">
+              <option value="BROOKLYN">Brooklyn College</option>
+              <option value="BROOKLYN">Kingsborough Community College</option>
+              <option value="BROOKLYN">Medgar Evers College</option>
+              <option value="BROOKLYN">NYC College of Technology (City Tech)</option>
+            </optgroup>
+            <optgroup label="── Bronx ──">
+              <option value="BRONX">Bronx Community College</option>
+              <option value="BRONX">Hostos Community College</option>
+              <option value="BRONX">Lehman College</option>
+            </optgroup>
+            <optgroup label="── Queens ──">
+              <option value="QUEENS">LaGuardia Community College</option>
+              <option value="QUEENS">Queens Borough Community College (QCC)</option>
+              <option value="QUEENS">Queens College</option>
+              <option value="QUEENS">York College</option>
+            </optgroup>
+            <optgroup label="── Staten Island ──">
+              <option value="STATEN ISLAND">College of Staten Island</option>
+            </optgroup>
+          </select>
+
+          <!-- "or" divider between campus and borough -->
+          <div class="or-divider"><hr> or <hr></div>
+
+          <select id="borough-select" onchange="onBoroughChange()">
+            <option value="">Search by borough</option>
+            <option value="MANHATTAN">Manhattan</option>
+            <option value="BROOKLYN">Brooklyn</option>
+            <option value="BRONX">Bronx</option>
+            <option value="QUEENS">Queens</option>
+            <option value="STATEN ISLAND">Staten Island</option>
+          </select>
+        </div>
+
+        <!-- Right column: Price range + Search button -->
+        <div class="filter-right">
+          <div class="filter-group">
+            <label>Price range</label>
+            <select id="price-select">
+              <option value="">Any price</option>
+              <option value="0-800">Under $800/mo</option>
+              <option value="800-1200">$800 – $1,200/mo</option>
+              <option value="1200-1800">$1,200 – $1,800/mo</option>
+              <option value="1800-2500">$1,800 – $2,500/mo</option>
+              <option value="2500+">$2,500+/mo</option>
+            </select>
+          </div>
+          <!-- Search button -->
+          <button class="search-btn" onclick="search()">Search housing</button>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Main results area -->
+  <main>
+    <div class="stats-row" id="stats-row" style="display:none">
+      <div class="stat-card"><div class="num" id="stat-count">0</div><div class="lbl">Developments found</div></div>
+      <div class="stat-card"><div class="num" id="stat-units">0</div><div class="lbl">Total units in area</div></div>
+      <div class="stat-card"><div class="num" id="stat-area">—</div><div class="lbl">Area searched</div></div>
+    </div>
+    <div id="results-area">
+      <div class="state-msg">
+        <h3>Search for housing</h3>
+        <p>Select your CUNY campus, borough, or price range to get started.</p>
+      </div>
+    </div>
+  </main>
+</div>
+
+
+<!-- ============================================================
+     RESOURCES PAGE
+     ============================================================ -->
+<div id="page-resources" class="page">
+  <section class="resources-hero">
+    <h1>Student Resources</h1>
+    <p>Everything you need to find, apply for, and afford housing as a CUNY student.</p>
+  </section>
+  <div class="resources-main">
+    <div class="resources-section">
+      <h2>Find & Apply for Housing</h2>
+      <div class="resource-cards">
+        <a href="https://housingconnect.nyc.gov" target="_blank" class="resource-card">
+          <div class="resource-card-title">NYC Housing Connect</div>
+          <div class="resource-card-desc">Official NYC portal to apply for affordable housing lotteries and browse open listings.</div>
+          <div class="resource-card-link">housingconnect.nyc.gov →</div>
+        </a>
+        <a href="https://www.nyc.gov/site/nycha/residents/apply-for-housing.page" target="_blank" class="resource-card">
+          <div class="resource-card-title">Apply for NYCHA Housing</div>
+          <div class="resource-card-desc">Learn how to apply for public housing through NYCHA and check your application status.</div>
+          <div class="resource-card-link">nyc.gov/nycha →</div>
+        </a>
+        <a href="https://access.nyc.gov/programs/rental-assistance/" target="_blank" class="resource-card">
+          <div class="resource-card-title">NYC Rental Assistance</div>
+          <div class="resource-card-desc">Find rental assistance programs for low-income New Yorkers including emergency help.</div>
+          <div class="resource-card-link">access.nyc.gov →</div>
+        </a>
+      </div>
+    </div>
+    <div class="resources-section">
+      <h2>CUNY Financial Aid & Support</h2>
+      <div class="resource-cards">
+        <a href="https://www.cuny.edu/financial-aid/" target="_blank" class="resource-card">
+          <div class="resource-card-title">CUNY Financial Aid</div>
+          <div class="resource-card-desc">Apply for grants, scholarships, and loans to help cover tuition and living expenses.</div>
+          <div class="resource-card-link">cuny.edu/financial-aid →</div>
+        </a>
+        <a href="https://www.cuny.edu/current-students/student-affairs/student-services/basic-needs/" target="_blank" class="resource-card">
+          <div class="resource-card-title">CUNY Basic Needs</div>
+          <div class="resource-card-desc">Help for students facing housing insecurity, food insecurity, and other basic needs.</div>
+          <div class="resource-card-link">cuny.edu/basic-needs →</div>
+        </a>
+        <a href="https://www.cuny.edu/academics/current-students/emergency-grants/" target="_blank" class="resource-card">
+          <div class="resource-card-title">CUNY Emergency Grants</div>
+          <div class="resource-card-desc">Emergency funding for students facing unexpected financial hardship including housing costs.</div>
+          <div class="resource-card-link">cuny.edu/emergency-grants →</div>
+        </a>
+      </div>
+    </div>
+    <div class="resources-section">
+      <h2>Digital Access & Tenant Rights</h2>
+      <div class="resource-cards">
+        <a href="https://access.nyc.gov/programs/big-apple-connect/" target="_blank" class="resource-card">
+          <div class="resource-card-title">Big Apple Connect</div>
+          <div class="resource-card-desc">Free high-speed internet and cable TV for NYCHA residents across 220 developments.</div>
+          <div class="resource-card-link">access.nyc.gov →</div>
+        </a>
+        <a href="https://www.nyc.gov/site/hpd/renters/tenant-rights.page" target="_blank" class="resource-card">
+          <div class="resource-card-title">NYC Tenant Rights</div>
+          <div class="resource-card-desc">Know your rights as a renter including protections against discrimination and eviction.</div>
+          <div class="resource-card-link">nyc.gov/hpd →</div>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ============================================================
+     ABOUT PAGE
+     ============================================================ -->
+<div id="page-about" class="page">
+  <section class="resources-hero">
+    <h1>About CUNYHousing</h1>
+    <p>Built by CUNY students, for CUNY students.</p>
+  </section>
+  <div class="resources-main">
+    <div class="resources-section">
+      <h2>Our Mission</h2>
+      <p class="about-text">The problem our team is tackling is helping CUNY students find affordable housing, as New York City rents are among the highest in the country and most campuses offer little to no on-campus housing. This forces students into an unstable situation that threatens their ability to stay enrolled and succeed academically.</p>
+    </div>
+    <div class="resources-section">
+      <h2>What We Built</h2>
+      <p class="about-text">CUNYHousing is a free website that helps CUNY students search for NYCHA affordable housing developments near their campus. Students can filter by campus, borough, and price range, and are directed to NYC Housing Connect to check for open applications.</p>
+    </div>
+    <div class="resources-section">
+      <h2>Data Sources</h2>
+      <div class="resource-cards">
+        <a href="https://data.cityofnewyork.us" target="_blank" class="resource-card">
+          <div class="resource-card-title">NYC Open Data — NYCHA</div>
+          <div class="resource-card-desc">Locations and unit counts for all NYCHA developments across the five boroughs.</div>
+          <div class="resource-card-link">data.cityofnewyork.us →</div>
+        </a>
+        <a href="https://housingconnect.nyc.gov" target="_blank" class="resource-card">
+          <div class="resource-card-title">NYC Housing Connect</div>
+          <div class="resource-card-desc">Official NYC portal for affordable housing lottery applications and real-time availability.</div>
+          <div class="resource-card-link">housingconnect.nyc.gov →</div>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- FOOTER -->
+<footer>
+  <p>Data from <a href="https://data.cityofnewyork.us" target="_blank">NYC Open Data</a>. For availability visit <a href="https://housingconnect.nyc.gov" target="_blank">NYC Housing Connect</a>. &copy; 2025 CUNYHousing.</p>
+</footer>
+
+<!-- JavaScript loaded at the bottom -->
+<script src="app.js"></script>
+</body>
+</html>

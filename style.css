@@ -1,0 +1,337 @@
+/* ============================================================
+   style.css — CUNYHousing Stylesheet
+   ============================================================ */
+
+/* Reset default browser styles */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── CSS Variables (colors) ── */
+:root {
+  --blue: #1A56DB;
+  --blue-dark: #1040A8;
+  --blue-light: #EBF2FF;
+  --text: #0F172A;
+  --text-muted: #64748B;
+  --text-light: #94A3B8;
+  --bg: #F8FAFC;
+  --white: #FFFFFF;
+  --border: #E2E8F0;
+  --border-strong: #CBD5E1;
+  --success: #059669;
+  --success-bg: #ECFDF5;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+header {
+  background: var(--blue);
+  padding: 0 1.5rem;
+  position: relative;
+  z-index: 100;
+}
+.header-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+}
+.logo { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+.logo-icon {
+  width: 32px; height: 32px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.logo-text { font-size: 18px; font-weight: 600; color: #fff; letter-spacing: -0.3px; }
+.logo-text span { color: rgba(255,255,255,0.6); font-weight: 400; }
+
+/* Desktop nav */
+.nav-desktop { display: flex; gap: 1.5rem; }
+.nav-desktop a {
+  color: rgba(255,255,255,0.75); text-decoration: none;
+  font-size: 14px; cursor: pointer; padding: 4px 8px;
+  border-radius: 6px; transition: color 0.2s;
+}
+.nav-desktop a:hover { color: #fff; }
+.nav-desktop a.active { color: #fff; background: rgba(255,255,255,0.15); }
+
+/* Hamburger (mobile only) */
+.hamburger {
+  display: none; flex-direction: column; gap: 5px;
+  cursor: pointer; padding: 6px; background: none; border: none;
+}
+.hamburger span {
+  display: block; width: 22px; height: 2px;
+  background: #fff; border-radius: 2px; transition: all 0.3s;
+}
+.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* Mobile nav drawer */
+.nav-mobile {
+  display: none; position: absolute; top: 64px; left: 0; right: 0;
+  background: var(--blue-dark); padding: 0.5rem 0; z-index: 99;
+}
+.nav-mobile.open { display: block; }
+.nav-mobile a {
+  display: block; color: rgba(255,255,255,0.85); text-decoration: none;
+  font-size: 15px; padding: 12px 1.5rem; cursor: pointer;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.nav-mobile a:last-child { border-bottom: none; }
+.nav-mobile a.active { color: #fff; background: rgba(255,255,255,0.1); }
+.nav-mobile a:hover { background: rgba(255,255,255,0.08); }
+
+/* Page visibility */
+.page { display: none; }
+.page.active { display: block; }
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero { background: var(--blue); padding: 3rem 1.5rem 4rem; text-align: center; }
+.hero h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(1.75rem, 5vw, 3.2rem);
+  color: #fff; line-height: 1.15; margin-bottom: 1rem;
+}
+.hero p {
+  color: rgba(255,255,255,0.75); font-size: 16px;
+  max-width: 520px; margin: 0 auto 2rem; line-height: 1.6;
+}
+
+/* ============================================================
+   FILTER CARD
+   Two equal columns: left (campus + or + borough), right (price + button)
+   ============================================================ */
+.filter-card {
+  background: var(--white);
+  border-radius: 16px;
+  padding: 1.5rem;
+  max-width: 780px;
+  margin: 0 auto;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+}
+
+/* Two equal columns side by side */
+.filter-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  align-items: center;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.filter-group label {
+  font-size: 12px; font-weight: 500;
+  color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 0.05em;
+}
+
+/* Shared input/select styles */
+.filter-group select,
+.filter-group input {
+  height: 44px;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 0 12px;
+  font-size: 14px;
+  font-family: 'DM Sans', sans-serif;
+  color: var(--text);
+  background: #ffffff;
+  outline: none;
+  transition: border-color 0.2s;
+  width: 100%;
+}
+.filter-group select {
+  appearance: none; -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748B' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 12px center;
+  padding-right: 32px; background-color: #ffffff;
+}
+.filter-group select:focus,
+.filter-group input:focus { border-color: var(--blue); }
+
+/* "or" divider between campus and borough dropdowns */
+.or-divider {
+  display: flex; align-items: center; gap: 8px;
+  margin: 8px 0; font-size: 12px; color: var(--text-light);
+}
+.or-divider hr { flex: 1; border: none; border-top: 1px solid var(--border); }
+
+/* Right column: price + search button stacked */
+.filter-right {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  justify-content: center;
+}
+
+/* Search button */
+.search-btn {
+  height: 46px;
+  background: var(--blue); color: #fff; border: none;
+  border-radius: 10px; font-size: 15px; font-weight: 600;
+  font-family: 'DM Sans', sans-serif; cursor: pointer;
+  transition: background 0.2s, transform 0.1s; width: 100%;
+}
+.search-btn:hover { background: var(--blue-dark); }
+.search-btn:active { transform: scale(0.98); }
+
+/* ============================================================
+   MAIN CONTENT
+   ============================================================ */
+main { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+.stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 2rem; }
+.stat-card {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 12px; padding: 1.25rem; text-align: center;
+}
+.stat-card .num { font-size: 28px; font-weight: 600; color: var(--blue); line-height: 1; }
+.stat-card .lbl { font-size: 13px; color: var(--text-muted); margin-top: 6px; }
+
+.results-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 1rem; flex-wrap: wrap; gap: 8px;
+}
+.results-header h2 { font-size: 18px; font-weight: 600; }
+.results-header span { font-size: 13px; color: var(--text-muted); }
+
+.listings-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+
+.listing-card {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 12px; padding: 1.25rem;
+  display: flex; flex-direction: column; gap: 10px;
+  transition: border-color 0.2s, transform 0.15s;
+}
+.listing-card:hover { border-color: #3B82F6; transform: translateY(-2px); }
+.listing-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+.listing-name { font-size: 15px; font-weight: 600; color: var(--text); line-height: 1.3; }
+.units-badge {
+  background: var(--blue-light); color: var(--blue-dark);
+  font-size: 12px; font-weight: 600; padding: 4px 10px;
+  border-radius: 20px; white-space: nowrap; flex-shrink: 0;
+}
+.listing-addr { font-size: 13px; color: var(--text-muted); }
+.listing-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.tag { font-size: 11px; padding: 3px 8px; border-radius: 6px; font-weight: 500; }
+.tag-nycha { background: var(--success-bg); color: var(--success); }
+.tag-borough { background: #F1F5F9; color: #475569; }
+.tag-campus { background: #EDE9FE; color: #5B21B6; }
+.availability-note { font-size: 12px; color: var(--text-light); font-style: italic; }
+.connect-btn {
+  display: block; width: 100%; padding: 12px;
+  background: var(--blue); color: #fff; border: none;
+  border-radius: 8px; font-size: 14px; font-weight: 600;
+  font-family: 'DM Sans', sans-serif; cursor: pointer;
+  text-align: center; text-decoration: none;
+  transition: background 0.2s; margin-top: auto;
+}
+.connect-btn:hover { background: var(--blue-dark); }
+
+.state-msg { text-align: center; padding: 4rem 1rem; color: var(--text-muted); }
+.state-msg h3 { font-size: 18px; font-weight: 500; margin-bottom: 0.5rem; color: var(--text); }
+.state-msg p { font-size: 14px; }
+
+.info-banner {
+  background: #FFF8E1; border: 1px solid #FFD54F;
+  border-radius: 10px; padding: 12px 16px;
+  font-size: 13px; color: #7B5800; margin-bottom: 1.5rem;
+}
+.campus-banner {
+  background: var(--blue-light); border: 1px solid #93C5FD;
+  border-radius: 10px; padding: 12px 16px;
+  font-size: 13px; color: var(--blue-dark); margin-bottom: 1.5rem;
+}
+.show-more-btn {
+  display: block; margin: 1.5rem auto 0;
+  background: var(--white); border: 1.5px solid var(--border-strong);
+  border-radius: 10px; padding: 12px 28px;
+  font-size: 14px; font-weight: 500;
+  font-family: 'DM Sans', sans-serif; cursor: pointer;
+  color: var(--text); width: 100%; max-width: 300px;
+}
+
+/* ============================================================
+   RESOURCES & ABOUT PAGES
+   ============================================================ */
+.resources-hero { background: var(--blue); padding: 3rem 1.5rem; text-align: center; }
+.resources-hero h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(1.75rem, 4vw, 2.8rem); color: #fff; margin-bottom: 0.75rem;
+}
+.resources-hero p { color: rgba(255,255,255,0.75); font-size: 16px; max-width: 500px; margin: 0 auto; line-height: 1.6; }
+.resources-main { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+.resources-section { margin-bottom: 2.5rem; }
+.resources-section h2 {
+  font-size: 18px; font-weight: 600; margin-bottom: 1rem;
+  padding-bottom: 0.5rem; border-bottom: 2px solid var(--blue-light);
+}
+.resource-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; }
+.resource-card {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 12px; padding: 1.25rem;
+  display: flex; flex-direction: column; gap: 8px;
+  transition: border-color 0.2s; text-decoration: none;
+}
+.resource-card:hover { border-color: var(--blue); }
+.resource-card-title { font-size: 15px; font-weight: 600; color: var(--text); }
+.resource-card-desc { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+.resource-card-link { font-size: 12px; color: var(--blue); font-weight: 500; margin-top: auto; }
+.about-text { font-size: 15px; line-height: 1.8; color: var(--text-muted); margin-bottom: 1rem; }
+
+/* Footer */
+footer {
+  background: var(--white); border-top: 1px solid var(--border);
+  padding: 1.5rem; text-align: center; font-size: 13px; color: var(--text-muted);
+}
+footer a { color: var(--blue); text-decoration: none; }
+
+/* ============================================================
+   MOBILE RESPONSIVE
+   ============================================================ */
+@media (max-width: 768px) {
+  .nav-desktop { display: none; }
+  .hamburger { display: flex; }
+  .hero { padding: 2rem 1rem 3rem; }
+  .hero p { font-size: 14px; }
+  .filter-card { padding: 1rem; border-radius: 12px; }
+
+  /* Stack filter columns on mobile */
+  .filter-row { grid-template-columns: 1fr; gap: 16px; }
+  .filter-right { gap: 10px; }
+
+  .stats-row { grid-template-columns: 1fr 1fr; }
+  .stats-row .stat-card:last-child { grid-column: 1 / -1; }
+  .listings-grid { grid-template-columns: 1fr; }
+  .connect-btn { padding: 14px; }
+  .filter-group select, .filter-group input { height: 48px; font-size: 15px; }
+  .resource-cards { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 480px) {
+  .hero h1 { font-size: 1.6rem; }
+  main { padding: 1.5rem 1rem 3rem; }
+  .resources-main { padding: 1.5rem 1rem 3rem; }
+  .stat-card .num { font-size: 22px; }
+  .stat-card .lbl { font-size: 12px; }
+}
